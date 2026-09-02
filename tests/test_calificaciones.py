@@ -1,13 +1,16 @@
-from src.calificaciones import calcular_promedio, determinar_estado, obtener_nota_mayor, obtener_nota_menor, generar_resumen, crear_estudiante, generar_resumen_estudiante, buscar_estudiante
+from src.calificaciones import calcular_promedio, determinar_estado, obtener_nota_mayor, obtener_nota_menor, generar_resumen, crear_estudiante, generar_resumen_estudiante, buscar_estudiante, obtener_mejor_estudiante
 import pytest
+
 
 def test_calcular_promedio_de_tres_notas():
     resultado = calcular_promedio([4.0,3.0, 5.0])
     assert resultado == 4.0
 
+
 def test_calcular_promedio_lista_vacia():
     with pytest.raises(ValueError):
         calcular_promedio([])
+
 
 def test_calificaciones_no_pueden_ser_menores_a_cero():
     with pytest.raises(ValueError):
@@ -135,3 +138,26 @@ def test_buscar_estudiante_inexistente():
 
     with pytest.raises(ValueError):
         buscar_estudiante(estudiantes, "Pedro")
+
+
+def test_obtener_mejor_estudiante_con_mayor_promedio():
+    estudiantes = [
+        {"nombre": "Ana", "calificaciones": [4.0, 5.0]},
+        {"nombre": "Luis", "calificaciones": [3.0, 3.0]},
+        {"nombre": "Carlos", "calificaciones": [3.0, 4.0]},
+    ]
+
+    resultado = obtener_mejor_estudiante(estudiantes)
+
+    assert resultado == {"nombre": "Ana", "calificaciones": [4.0, 5.0]}
+
+
+def test_obtener_mejor_estudiante_empate():
+    estudiantes = [
+        {"nombre": "Ana", "calificaciones": [4.0, 4.0]},
+        {"nombre": "Luis", "calificaciones": [3.0, 5.0]},
+        {"nombre": "Carlos", "calificaciones": [2.0, 6.0]},
+    ]
+
+    with pytest.raises(ValueError):
+        obtener_mejor_estudiante(estudiantes)
