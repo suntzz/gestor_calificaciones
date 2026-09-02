@@ -34,3 +34,28 @@ def generar_resumen(calificaciones):
         "nota_menor": obtener_nota_menor(calificaciones),
         "estado": determinar_estado(calificaciones)
     }
+
+
+def crear_estudiante(nombre, calificaciones):
+    if nombre is None or not nombre.strip():
+        raise ValueError("El nombre no puede estar vacío")
+
+    resumen = generar_resumen(calificaciones)
+
+    return {
+        "nombre": nombre.strip(),
+        "calificaciones": calificaciones,
+        **resumen
+    }
+
+
+def generar_resumen_estudiante(estudiante):
+    nombre = estudiante["nombre"]
+    calificaciones = estudiante["calificaciones"]
+
+    resumen = generar_resumen(calificaciones)
+
+    return {
+        "nombre": nombre,
+        **resumen
+    }
