@@ -1,4 +1,4 @@
-from src.calificaciones import calcular_promedio, determinar_estado, obtener_nota_mayor, obtener_nota_menor, generar_resumen, crear_estudiante, generar_resumen_estudiante, buscar_estudiante, obtener_mejor_estudiante
+from src.calificaciones import calcular_promedio, determinar_estado, obtener_nota_mayor, obtener_nota_menor, generar_resumen, crear_estudiante, generar_resumen_estudiante, buscar_estudiante, obtener_mejor_estudiante, generar_reporte_grupo
 import pytest
 
 
@@ -161,3 +161,26 @@ def test_obtener_mejor_estudiante_empate():
 
     with pytest.raises(ValueError):
         obtener_mejor_estudiante(estudiantes)
+
+
+def test_generar_reporte_grupo():
+    estudiantes = [
+        {"nombre": "Ana", "calificaciones": [4.0, 5.0]},
+        {"nombre": "Luis", "calificaciones": [2.0, 3.0]},
+        {"nombre": "Carlos", "calificaciones": [3.0, 4.0]},
+    ]
+
+    resultado = generar_reporte_grupo(estudiantes)
+
+    assert resultado == {
+        "total_estudiantes": 3,
+        "promedio_general": 3.5,
+        "aprobados": 2,
+        "reprobados": 1,
+        "mejor_estudiante": "Ana"
+    }
+
+
+def test_generar_reporte_grupo_lista_vacia():
+    with pytest.raises(ValueError):
+        generar_reporte_grupo([])

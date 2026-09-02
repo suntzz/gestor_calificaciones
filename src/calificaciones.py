@@ -59,3 +59,54 @@ def generar_resumen_estudiante(estudiante):
         "nombre": nombre,
         **resumen
     }
+
+
+def buscar_estudiante(estudiantes, nombre):
+    for estudiante in estudiantes:
+        if estudiante["nombre"] == nombre:
+            return estudiante
+
+    raise ValueError(f"Estudiante no encontrado: {nombre}")
+
+
+def obtener_mejor_estudiante(estudiantes):
+    if len(estudiantes) == 0:
+        raise ValueError("La lista no puede estar vacía")
+
+    mejor_estudiante = None
+    mejor_promedio = None
+
+    for estudiante in estudiantes:
+        promedio = calcular_promedio(estudiante["calificaciones"])
+
+        if mejor_promedio is None or promedio > mejor_promedio:
+            mejor_promedio = promedio
+            mejor_estudiante = estudiante
+        elif promedio == mejor_promedio:
+            raise ValueError("Hay varios estudiantes con el mismo promedio más alto")
+
+    return mejor_estudiante
+
+
+def generar_reporte_grupo(estudiantes):
+    if len(estudiantes) == 0:
+        raise ValueError("La lista no puede estar vacía")
+
+    promedios = [calcular_promedio(estudiante["calificaciones"]) for estudiante in estudiantes]
+    promedio_general = calcular_promedio(promedios)
+
+    aprobados = 0
+    for estudiante in estudiantes:
+        if determinar_estado(estudiante["calificaciones"]) == "Aprobado":
+            aprobados += 1
+
+    reprobados = len(estudiantes) - aprobados
+    mejor_estudiante = obtener_mejor_estudiante(estudiantes)
+
+    return {
+        "total_estudiantes": len(estudiantes),
+        "promedio_general": promedio_general,
+        "aprobados": aprobados,
+        "reprobados": reprobados,
+        "mejor_estudiante": mejor_estudiante["nombre"]
+    }
